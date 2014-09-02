@@ -114,7 +114,6 @@ package com.longtailvideo.jwplayer.view.components {
 		protected var _volSliderV:Slider;
 		protected var _volSliderH:Slider;
 		protected var _audioMode:Boolean = false;
-		protected var _hideFullscreen:Boolean = false;
 		protected var _levels:Array;
 		protected var _currentQuality:Number = 0;
 		protected var _hdOverlay:TooltipMenu;
@@ -329,7 +328,7 @@ package com.longtailvideo.jwplayer.view.components {
 				newLayout = newLayout.replace("castoff", "cast");
 				newLayout = newLayout.replace("fullscreen", "");
 				hideButton("castoff");
-				hideButton("fullscreen", false);
+				showButton("fullscreen");
 				hideButton("normalscreen");
 			} else {
 				hideButton("cast");
@@ -369,30 +368,30 @@ package com.longtailvideo.jwplayer.view.components {
 			if (_timeSlider) {
 				if (_timeAlt && _timeAlt.text || _liveMode) {
 					_timeSlider.visible = false;
-					hideButton('alt', false);
-					hideButton('elapsed', true);
-					hideButton('duration', true);
+					showButton('alt');
+					hideButton('elapsed');
+					hideButton('duration');
 					newLayout = newLayout.replace("duration","");
 					newLayout = newLayout.replace("elapsed","");
 					_timeSlider.visible = false;
 				} else {
-					hideButton('alt', true);
+					hideButton('alt');
 					_timeSlider.visible = true;
 				}
 			}
 			//  more fullscreen
-			if (_audioMode || _hideFullscreen || _player.config.fullscreen && newLayout) {
+			if (_audioMode || _player.config.fullscreen && newLayout) {
 				newLayout = newLayout.replace("fullscreen", "");
-				hideButton('fullscreen', true);
+				hideButton('fullscreen');
 			} else {
-				hideButton('fullscreen', false);
+				showButton('fullscreen');
 			}
 			// volume
 			if (_audioMode || _instreamMode) {
-				hideButton('volumeH', false)
+				showButton('volumeH')
 			} else {
 				newLayout = newLayout.replace("volumeH", "");
-				hideButton('volumeH', true);
+				hideButton('volumeH');
 			}
 			
 			_currentLayout = removeInactive(newLayout);
@@ -927,6 +926,10 @@ package com.longtailvideo.jwplayer.view.components {
 
 
 
+        private function showButton(name:String) {
+            hideButton(name, false);
+        }
+
 		private function hideButton(name:String, state:Boolean = true):void {
 			var button:DisplayObject = _buttons[name];
 			if (button && contains(button)) {
@@ -992,7 +995,6 @@ package com.longtailvideo.jwplayer.view.components {
 
 			if (_fullscreen != _player.config.fullscreen) {
 				_fullscreen = _player.config.fullscreen;
-				//stopFader();
 			}
 			
 			stateHandler();
@@ -1125,11 +1127,6 @@ package com.longtailvideo.jwplayer.view.components {
 			stateHandler();
 			if (_timeSlider) (_timeSlider as TimeSlider).audioMode(state);
 			if (state) show();
-		}
-
-		public function hideFullscreen(state:Boolean):void {
-			_hideFullscreen = state;
-			stateHandler();
 		}
 
 		override public function hide(force:Boolean = false):void {

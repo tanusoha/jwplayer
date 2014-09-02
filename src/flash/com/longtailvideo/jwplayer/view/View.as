@@ -687,10 +687,8 @@ package com.longtailvideo.jwplayer.view {
 				_mediaFade.fade(1);
 				_imageFade.cancelAnimation();
 				_imageLayer.alpha = 0;
-				components.controlbar.hideFullscreen(false);
 			} else {
 				showImage();
-				components.controlbar.hideFullscreen(true);
 				if (_model.state != PlayerState.IDLE) showControls();
 			} 
 		}
@@ -703,7 +701,6 @@ package com.longtailvideo.jwplayer.view {
 					hideControls();
 					components.dock.show();
 					components.logo.show();
-					components.controlbar.hideFullscreen(false);
 					imageDelay.start();
 					break;
 				case PlayerState.BUFFERING:
